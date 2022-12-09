@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PagesController;
+use App\Http\Controllers\HomeController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -22,4 +24,7 @@ Route::get('/strona-glowna' , [PagesController::class , 'homePage'] )->name('hom
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
+
+// Single payment process
+Route::post('single-charge', [HomeController::class , 'singleCharge'])->name('single.charge');

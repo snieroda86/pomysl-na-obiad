@@ -23,6 +23,26 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $user = auth()->user();
+        return view('home' , [
+             'intent' => $user->createSetupIntent()
+        ]);
+    }
+
+    // Single charge
+    public function singleCharge(Request $request){
+        $amount  = $request->amount * 100;
+        $paymentMethod = $request->payment_method;
+
+        $user = auth()->user();
+        $user->createOrGetStripeCustomer();
+
+        $paymentMethod = $user->addPaymentMethod($paymentMethod);
+
+        $stripeCharge = $user->charge(
+            $amount , $paymentMethod->id
+        );
+
+        return to_route('home');
     }
 }
